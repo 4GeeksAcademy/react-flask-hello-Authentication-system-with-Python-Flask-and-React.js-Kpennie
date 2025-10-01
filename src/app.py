@@ -48,7 +48,7 @@ app.register_blueprint(api, url_prefix='/api')
 # Handle/serialize errors like a JSON object
 @app.errorhandler(Exception)
 def handle_invalid_usage(error):
-    return jsonify({"error": str(error)}), 500
+    return jsonify({"error": str(error)}), 500 # type: ignore
 
 # Generate sitemap with all endpoints
 @app.route('/')
