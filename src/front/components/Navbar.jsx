@@ -1,19 +1,50 @@
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../authContext.jsx';
 
 export const Navbar = () => {
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
 
-	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div>
-			</div>
-		</nav>
-	);
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  return (
+    <nav className='navbar'>
+      <div className='nav-container'>
+        <Link to='/' className='nav-brand'>
+          🏠 Cool Clubhouse
+        </Link>
+
+        <div className='nav-links'>
+          <Link to='/' className='nav-link'>
+            🏡 Home
+          </Link>
+
+          {isAuthenticated ? (
+            <>
+              <Link to='/private' className='nav-link'>
+                🎪 VIP Room
+              </Link>
+              <span className='nav-user'>👤 {user?.email}</span>
+              <button onClick={handleLogout} className='nav-button logout-btn'>
+                🚪 Leave Clubhouse
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to='/signup' className='nav-link'>
+                📝 Get Membership
+              </Link>
+              <Link to='/login' className='nav-button login-btn'>
+                🎟️ Enter Clubhouse
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
 };
